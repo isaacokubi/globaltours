@@ -29,7 +29,7 @@ class GlobalToursApp extends StatelessWidget {
       ChangeNotifierProvider(create: (c) => FinanceProvider(c.read<FinanceRepository>())),
     ],
     child: Consumer<ThemeProvider>(
-      builder: (_, theme, __) => MaterialApp(
+      builder: (context, theme, child) => MaterialApp(
         title: 'Global Tours',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
