@@ -1,0 +1,4 @@
+import 'package:flutter/material.dart';
+import '../../widgets/app_shell.dart';
+class TourDetailScreen extends StatelessWidget { const TourDetailScreen({super.key,required this.tour}); final Map<String,dynamic> tour;
+ @override Widget build(BuildContext context)=>AppShell(child:ListView(padding:const EdgeInsets.all(20),children:[Text(tour['name']?.toString()??tour['title']?.toString()??'Tour',style:Theme.of(context).textTheme.headlineSmall),const SizedBox(height:12),Text(tour['description']?.toString()??'Discover this experience with Global Tours.'),const SizedBox(height:20),Text('Price: KES '+(tour['price']??tour['adultPrice']??0).toString()),const SizedBox(height:20),FilledButton(onPressed:()=>ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content:Text('Booking checkout will use the existing API.'))),child:const Text('Book this tour'))]));}
