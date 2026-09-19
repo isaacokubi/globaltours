@@ -19,7 +19,7 @@ class TourDetailScreen extends StatelessWidget {
           const SizedBox(height: 12),
           Text(description),
           const SizedBox(height: 20),
-          Text('Price: KES ' + price.toString()),
+          Text('Price: KES $price'),
           const SizedBox(height: 20),
           FilledButton.icon(
             onPressed: () => Navigator.pushNamed(
