@@ -76,9 +76,9 @@ class _BookingCheckoutScreenState extends State<BookingCheckoutScreen> {
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            Text('Book ' + name, style: Theme.of(context).textTheme.headlineSmall),
+            Text('Book $name', style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 8),
-            Text('Estimated price: KES ' + price.toString() + ' per guest'),
+            Text('Estimated price: KES $price per guest'),
             const SizedBox(height: 20),
             TextFormField(
               controller: _travelerName,
@@ -97,9 +97,7 @@ class _BookingCheckoutScreenState extends State<BookingCheckoutScreen> {
               contentPadding: EdgeInsets.zero,
               title: Text(_travelDate == null
                   ? 'Select travel date'
-                  : _travelDate!.year.toString() + '-' +
-                    _travelDate!.month.toString().padLeft(2, '0') + '-' +
-                    _travelDate!.day.toString().padLeft(2, '0')),
+                 : '${_travelDate!.year}-${_travelDate!.month.toString().padLeft(2, '0')}-${_travelDate!.day.toString().padLeft(2, '0')}'),
               trailing: const Icon(Icons.calendar_month),
               onTap: () async {
                 final date = await showDatePicker(
