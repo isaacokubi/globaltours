@@ -11,7 +11,10 @@ class GlobalToursApp extends StatelessWidget {
   Widget build(BuildContext context) => MultiProvider(
     providers: [
       Provider(create: (_) => ApiClient()),
-      ChangeNotifierProvider(create: (_) => AuthController()),
+      ChangeNotifierProxyProvider<ApiClient, AuthController>(
+        create: (_) => AuthController(),
+        update: (_, api, auth) { auth!..setApi(api); return auth; },
+      ),
       ChangeNotifierProvider(create: (_) => TenantController()),
     ],
     child: MaterialApp.router(
