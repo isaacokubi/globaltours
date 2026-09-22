@@ -31,7 +31,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rsync -a --delete --exclude='.git' source/ target/
+          rsync -a --delete --exclude='.git' --exclude='.github/workflows/' source/ target/
+          rm -f target/.github/workflows/flutter.yml
+          rm -f target/.github/workflows/import-source-system.yml
           cd target
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
