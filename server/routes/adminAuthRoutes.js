@@ -1,0 +1,32 @@
+import { resolveTenant } from "../middleware/tenantMiddleware.js";
+// server/routes/adminAuthRoutes.js
+
+import express from "express";
+
+import {
+  adminLogin,
+} from "../controllers/adminAuthController.js";
+
+import { loginRateLimiter } from "../middleware/authRateLimiters.js";
+
+const router = express.Router();
+
+router.use(resolveTenant);
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
+
+/**
+ * POST /api/admin/login
+ * Admin authentication
+ */
+router.post(
+  "/login",
+  loginRateLimiter,
+  adminLogin
+);
+
+export default router;

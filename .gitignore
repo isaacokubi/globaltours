@@ -1,24 +1,86 @@
-# Dart / Flutter
-.dart_tool/
-.packages
-.pub/
-build/
-.flutter-plugins
-.flutter-plugins-dependencies
-.idea/
-.vscode/
-*.iml
+# Dependencies
+node_modules/
+*/node_modules/
 
-# Environment
+# Environment and secrets
 .env
-.env.*
-!.env.example
+.env.local
+.env.development
+.env.production
+server/.env
+client/.env
+client/.env.local
+client/.env.development
+client/.env.production
+!server/.env.example
+!client/.env.example
 
-# Generated platform artifacts
-android/.gradle/
-android/app/debug/
-android/app/profile/
-android/app/release/
-ios/Pods/
-ios/.symlinks/
-ios/Flutter/ephemeral/
+# Build / deployment output
+dist/
+build/
+.vercel/
+.render/
+
+# Logs / coverage
+logs/
+server/logs/
+*.log
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+
+# Uploads / generated data
+uploads/
+server/backups/
+server/server/backups/
+
+# Temporary / repair / audit artifacts
+*.bak
+*.backup
+*.backup.*
+*.before-*
+*.before_*
+*.old
+*.old.js
+*.save
+*.broken
+*.orig
+*-BACKUP*/
+*-BACKUP-*
+client-BACKUP-*
+server-BACKUP-*
+.audit-fix-backup-*/
+.fix-backup-*/
+.module-completion-backup-*/
+.final-audit-backup-*/
+.final-repair-backup-*/
+merge-backup-*/
+BACKUP-BEFORE-ZIP-MERGE-*/
+backup_before_*
+tenant_backup*
+.repair-backups/
+server/rbac-repair-backup-*/
+server/superadmin-rbac-audit-*.txt
+
+# Local audit / diagnostic output
+/tmp/
+*_report.txt
+*_REPORT.txt
+
+# Local repair tooling
+repair_*.py
+fix_*.py
+upgrade_*.py
+*_audit*.py
+
+# Archives / temporary exports
+*.tar.gz
+clean-env.sh

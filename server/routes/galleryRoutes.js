@@ -1,0 +1,31 @@
+import { resolveTenant } from "../middleware/tenantMiddleware.js";
+import express from "express";
+
+
+import {
+
+getFeaturedGallery
+
+}
+
+from "../controllers/galleryController.js";
+
+
+
+const router = express.Router();
+
+router.use(resolveTenant);
+
+
+
+router.get(
+
+"/featured",
+
+getFeaturedGallery
+
+);
+
+
+
+export default router;

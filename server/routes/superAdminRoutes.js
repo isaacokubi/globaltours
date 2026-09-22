@@ -1,0 +1,55 @@
+import express from "express";
+import securityService from "../services/securityService.js";
+import { protect } from "../middleware/authMiddleware.js";
+import { superAdminOnly } from "../middleware/superAdminOnly.js";
+import { getSuperAdminDashboardMetrics } from "../controllers/superAdminDashboardMetricsController.js";
+import { getAuditLogs, getDatabaseStatus, getSystemHealth, clearSystemCache } from "../controllers/superAdminOperationsController.js";
+import { getApiMonitor } from "../controllers/apiMonitorController.js";
+import { createPlatformDatabaseBackup, listPlatformDatabaseBackups, deletePlatformDatabaseBackup, downloadPlatformDatabaseBackup } from "../controllers/superAdminBackupController.js";
+import { getSuperAdminUsers, createSuperAdminCompanyAccount, updateSuperAdminUserStatus, deleteSuperAdminUser } from "../controllers/superAdminUserController.js";
+import { listTenants, getTenant, createTenantWithAdmin, updateTenantStatus, deleteTenant, getTenantPlans } from "../controllers/superAdminTenantController.js";
+import { approveTenantSubscription, switchTenantSubscription, listSubscriptionPayments } from "../controllers/tenantSubscriptionController.js";
+import { getPlatformBillingConfig, updatePlatformBillingConfig, getPlatformPlanFeatureCatalog } from "../controllers/platformBillingController.js";
+import { getSettings, updateSettings } from "../controllers/settingsController.js";
+
+const router = express.Router();
+router.use(protect, superAdminOnly);
+
+router.get("/dashboard/metrics", getSuperAdminDashboardMetrics);
+router.get("/dashboard", getSuperAdminDashboardMetrics);
+router.get("/tenant-plans", getTenantPlans);
+router.get("/tenants", listTenants);
+router.post("/tenants", createTenantWithAdmin);
+router.get("/tenants/:id", getTenant);
+router.patch("/tenants/:id/status", updateTenantStatus);
+router.post("/tenants/:id/subscription/activate", approveTenantSubscription);
+router.patch("/tenants/:id/subscription/plan", switchTenantSubscription);
+router.delete("/tenants/:id", deleteTenant);
+router.get("/subscription-payments", listSubscriptionPayments);
+router.get("/billing/config", getPlatformBillingConfig);
+router.put("/billing/config", updatePlatformBillingConfig);
+router.get("/billing/features", getPlatformPlanFeatureCatalog);
+router.get("/users", getSuperAdminUsers);
+router.post("/users/accounts", createSuperAdminCompanyAccount);
+router.patch("/users/:id/status", updateSuperAdminUserStatus);
+router.put("/users/:id/status", updateSuperAdminUserStatus);
+router.delete("/users/:id", deleteSuperAdminUser);
+router.get("/audit", getAuditLogs);
+router.get("/security", async (req, res) => { try { const data = await securityService.getSecurityStatus(); return res.json({ success: true, data }); } catch (error) { console.error("SuperAdmin security status error:", error); return res.status(500).json({ success: false, message: error.message }); } });
+router.get("/database", getDatabaseStatus);
+router.get("/system", getSystemHealth);
+router.get("/api-monitor", getApiMonitor);
+router.get("/settings", getSettings);
+router.put("/settings", updateSettings);
+router.post("/maintenance/backup", createPlatformDatabaseBackup);
+router.post("/database/backup", createPlatformDatabaseBackup);
+router.post("/maintenance/cache", clearSystemCache);
+router.post("/database/cache-clear", clearSystemCache);
+// Canonical platform backup read endpoint. Kept under /database so it cannot
+// be confused with tenant maintenance routes mounted at /superadmin/maintenance.
+router.get("/database/backups", listPlatformDatabaseBackups);
+router.get("/maintenance/backups", listPlatformDatabaseBackups);
+router.delete("/maintenance/backups/:id", deletePlatformDatabaseBackup);
+router.delete("/database/backups/:id", deletePlatformDatabaseBackup);
+router.get("/database/backup/:id/download", downloadPlatformDatabaseBackup);
+export default router;

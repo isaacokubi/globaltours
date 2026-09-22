@@ -1,0 +1,24 @@
+import express from "express";
+import { protect, managerOnly } from "../middleware/authMiddleware.js";
+import { listHotels, getHotel, updateHotel, createRoomType, updateRoomType, createHotelBooking, updateHotelBooking } from "../controllers/hotelController.js";
+import { createAdminHotel } from "../controllers/adminHotelCreationController.js";
+import { checkHotelAvailability } from "../controllers/hotelAvailabilityController.js";
+import { listAdminHotelsSafe, listHotelBookingsSafe } from "../controllers/hospitalityAdminController.js";
+import { syncAccommodationInventoryToHotelPms } from "../controllers/hospitalityInventorySyncController.js";
+import { createConcurrentSafeHotelBooking } from "../controllers/hospitalityInventoryConcurrencyController.js";
+import { paymentMutationGuard } from "../middleware/paymentMutationGuard.js";
+
+const router = express.Router();
+router.get("/", listHotels);
+router.get("/availability", checkHotelAvailability);
+router.get("/admin/catalog", protect, managerOnly, listAdminHotelsSafe);
+router.post("/admin/catalog", protect, managerOnly, createAdminHotel);
+router.patch("/admin/catalog/:id", protect, managerOnly, updateHotel);
+router.post("/admin/catalog/:hotelId/rooms", protect, managerOnly, createRoomType);
+router.patch("/admin/rooms/:id", protect, managerOnly, updateRoomType);
+router.post("/admin/sync-inventory", protect, managerOnly, syncAccommodationInventoryToHotelPms);
+router.post("/bookings", protect, createConcurrentSafeHotelBooking);
+router.get("/bookings", protect, listHotelBookingsSafe);
+router.patch("/bookings/:id", protect, paymentMutationGuard, updateHotelBooking);
+router.get("/:id", getHotel);
+export default router;
